@@ -19,28 +19,14 @@
  * @since 2018.09.17
  */
 
-package com.ibdiscord.command.commands;
+package com.ibdiscord.utils.objects;
 
 import com.ibdiscord.command.Command;
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.permissions.CommandPermission;
 
-import java.util.HashSet;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-public final class PingCommand extends Command {
-
-    public PingCommand() {
-        super("ping",
-                Stream.of("pong", "latency").collect(Collectors.toSet()),
-                CommandPermission.discord(),
-                new HashSet<>()
-        );
-    }
+public final class Comparator implements java.util.Comparator<Command> {
 
     @Override
-    protected void execute(CommandContext context) {
-        context.reply("Pong! WebSocket latency is currently %d.", context.getGuild().getJDA().getPing());
+    public int compare(Command o1, Command o2) {
+        return o1.getName().compareTo(o2.getName());
     }
 }
