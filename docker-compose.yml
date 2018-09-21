@@ -8,10 +8,10 @@ services:
   bot:
     image: ib.ai
     restart: on-failure:3
-    build: ./IB.ai/docker
+    build: ./bot/docker
     container_name: bot
     volumes:
-      - ./IB.ai/docker/Config.toml:/opt/IB.ai/Config.toml
+      - ./bot/docker/Config.toml:/opt/IB.ai/Config.toml
     networks:
       - bot-db-net
     depends_on:
@@ -26,13 +26,9 @@ services:
     build: ./web/docker
     container_name: web
     volumes:
-      - ./web/:/usr/src/app
-    networks:
-      - bot-db-net
+      - ./web:/usr/src/app
     ports:
-      - "80"
-    environment:
-      WEB_URL: "http://web:80"
+      - 5001:80
     depends_on:
       - db
 
@@ -46,7 +42,7 @@ services:
     container_name: db
     command: redis-server /opt/IB.ai/Redis.conf
     volumes:
-      - ./database-config/Redis.conf:/opt/IB.ai/Redis.conf
+      - ./db/Redis.conf:/opt/IB.ai/Redis.conf
     networks:
       - bot-db-net
     ports:
